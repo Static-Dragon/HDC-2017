@@ -25,6 +25,7 @@ namespace HDC {
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btn_conn = new System.Windows.Forms.Button();
             this.txtbx_Host = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -33,7 +34,6 @@ namespace HDC {
             this.txtbx_uName = new System.Windows.Forms.TextBox();
             this.Password = new System.Windows.Forms.Label();
             this.txtbx_passwd = new System.Windows.Forms.TextBox();
-            this.txtbx_port = new HDC.NumericTextBox();
             this.btn_discon = new System.Windows.Forms.Button();
             this.btn_quit = new System.Windows.Forms.Button();
             this.lbl_boatStatus = new System.Windows.Forms.Label();
@@ -47,15 +47,17 @@ namespace HDC {
             this.drpdwn_Debug = new System.Windows.Forms.ToolStripMenuItem();
             this.timer_UIUpdate = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.timer_roboTick = new System.Windows.Forms.Timer(this.components);
+            this.btn_scan = new System.Windows.Forms.Button();
+            this.pbox_Grid = new System.Windows.Forms.PictureBox();
+            this.txtbx_port = new HDC.NumericTextBox();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbox_Grid)).BeginInit();
             this.SuspendLayout();
             // 
             // btn_conn
             // 
-            this.btn_conn.Location = new System.Drawing.Point(534, 376);
+            this.btn_conn.Location = new System.Drawing.Point(362, 405);
             this.btn_conn.Name = "btn_conn";
             this.btn_conn.Size = new System.Drawing.Size(75, 23);
             this.btn_conn.TabIndex = 0;
@@ -120,14 +122,6 @@ namespace HDC {
             this.txtbx_passwd.Size = new System.Drawing.Size(100, 20);
             this.txtbx_passwd.TabIndex = 8;
             this.txtbx_passwd.UseSystemPasswordChar = true;
-            // 
-            // txtbx_port
-            // 
-            this.txtbx_port.AllowSpace = false;
-            this.txtbx_port.Location = new System.Drawing.Point(13, 90);
-            this.txtbx_port.Name = "txtbx_port";
-            this.txtbx_port.Size = new System.Drawing.Size(100, 20);
-            this.txtbx_port.TabIndex = 4;
             // 
             // btn_discon
             // 
@@ -216,7 +210,7 @@ namespace HDC {
             // 
             // timer_UIUpdate
             // 
-            this.timer_UIUpdate.Interval = 6000;
+            this.timer_UIUpdate.Interval = 1000;
             this.timer_UIUpdate.Tick += new System.EventHandler(this.timer_UIUpdate_Tick);
             // 
             // statusStrip1
@@ -227,31 +221,42 @@ namespace HDC {
             this.statusStrip1.TabIndex = 13;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // button1
+            // btn_scan
             // 
-            this.button1.Location = new System.Drawing.Point(355, 47);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 14;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btn_scan.Location = new System.Drawing.Point(443, 405);
+            this.btn_scan.Name = "btn_scan";
+            this.btn_scan.Size = new System.Drawing.Size(75, 23);
+            this.btn_scan.TabIndex = 14;
+            this.btn_scan.Text = "Scan";
+            this.btn_scan.UseVisualStyleBackColor = true;
+            this.btn_scan.Click += new System.EventHandler(this.btn_scan_Click);
             // 
-            // button2
+            // pbox_Grid
             // 
-            this.button2.Location = new System.Drawing.Point(469, 45);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 15;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
+            this.pbox_Grid.InitialImage = ((System.Drawing.Image)(resources.GetObject("pbox_Grid.InitialImage")));
+            this.pbox_Grid.Location = new System.Drawing.Point(191, 24);
+            this.pbox_Grid.Name = "pbox_Grid";
+            this.pbox_Grid.Size = new System.Drawing.Size(500, 375);
+            this.pbox_Grid.TabIndex = 15;
+            this.pbox_Grid.TabStop = false;
+            this.pbox_Grid.WaitOnLoad = true;
+            this.pbox_Grid.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // txtbx_port
+            // 
+            this.txtbx_port.AllowSpace = false;
+            this.txtbx_port.Location = new System.Drawing.Point(13, 90);
+            this.txtbx_port.Name = "txtbx_port";
+            this.txtbx_port.Size = new System.Drawing.Size(100, 20);
+            this.txtbx_port.TabIndex = 4;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(703, 457);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.pbox_Grid);
+            this.Controls.Add(this.btn_scan);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.lbl_boatStatus);
             this.Controls.Add(this.btn_quit);
@@ -271,6 +276,7 @@ namespace HDC {
             this.Text = "Form1";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbox_Grid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -300,9 +306,9 @@ namespace HDC {
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem drpdwn_Debug;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Timer timer_roboTick;
+        private System.Windows.Forms.Button btn_scan;
+        private System.Windows.Forms.PictureBox pbox_Grid;
     }
 }
 

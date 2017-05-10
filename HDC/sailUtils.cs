@@ -27,6 +27,10 @@ namespace HDC {
                     }
             };
         }
+        public static string[] send (ref Client simAPI, String message) {
+            simAPI.send (message);
+            return simAPI.receive ();
+        }
 
     }
 }

@@ -12,6 +12,7 @@ using System;
 using NavInterfaceClient;
 using System.Windows.Forms;
 using System.Threading;
+using System.Drawing;
 
 namespace HDC {
     public partial class Form1 : Form {
@@ -19,6 +20,8 @@ namespace HDC {
         static bool debug = false, anchorState;
         bool connected = false;
         int serverPort;
+        Pen pen = new Pen (Color.Black);
+        
         Thread sampleThread;
         static Client simAPI = new Client();
         SailAI seaFire = new SailAI(ref simAPI, debug);
@@ -26,8 +29,7 @@ namespace HDC {
         public Form1() { InitializeComponent(); }
         private void Form1_Load(object sender, EventArgs e) {
             Thread sampleThread = new Thread(delegate () {
-                this.statusStrip1.Invoke (new MethodInvoker(delegate ()
-                {
+                this.statusStrip1.Invoke (new MethodInvoker(delegate () {
                     timer_UIUpdate.Start();
                     timer_roboTick.Start();
                 }));
@@ -59,10 +61,26 @@ namespace HDC {
                 // Invoke your control like this
                 this.statusStrip1.Invoke(new MethodInvoker(delegate ()
                 {
-                    timer_UIUpdate.Start();
+                    //timer_UIUpdate.Start();
                 }));
             });
             sampleThread.Start();
+            pbox_Grid.Show ();
+            Bitmap bmp = new Bitmap (pbox_Grid.Width, pbox_Grid.Height);
+            using (Graphics g = Graphics.FromImage (bmp)) {
+                g.Clear (Color.White);
+            }
+            pbox_Grid.Image = bmp;
+            /*
+            PointF points = new PointF (20.0f, 20.0f);
+            PointF points2 = new PointF (40.0f, 40.0f);
+            PointF[] point = new PointF [2] {points, points2 };*/
+            Console.WriteLine (pbox_Grid.Size);
+            using (Graphics g = Graphics.FromImage (bmp)) {
+                for (float x = 0f; x == 500f; x = x + 10f) {
+                    g.DrawLine (pen, x, 0);
+                }
+            }
         }
         private void btn_discon_Click (object sender, EventArgs e) {
             if (connected) {
@@ -81,6 +99,15 @@ namespace HDC {
             
         }
         private void drpdwn_Debug_Click (object sender, EventArgs e) { debug = debug == false ? true : false; }
+
+        private void btn_scan_Click (object sender, EventArgs e) {
+            simAPI.send ("obstacleScan");
+            simAPI.receive();
+        }
+
+        private void pictureBox1_Click (object sender, EventArgs e) {
+
+        }
 
         private void btn_quit_Click (object sender, EventArgs e) {
             if (connected) {
