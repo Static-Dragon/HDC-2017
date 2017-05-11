@@ -13,6 +13,7 @@ using NavInterfaceClient;
 using System.Windows.Forms;
 using System.Threading;
 using System.Drawing;
+using System.Collections;
 
 namespace HDC {
     public partial class Form1 : Form {
@@ -77,8 +78,21 @@ namespace HDC {
             PointF[] point = new PointF [2] {points, points2 };*/
             Console.WriteLine (pbox_Grid.Size);
             using (Graphics g = Graphics.FromImage (bmp)) {
-                for (float x = 0f; x == 500f; x = x + 10f) {
-                    g.DrawLine (pen, x, 0);
+                PointF point1 = new PointF(10f, 10f);
+                PointF point2 = new PointF(20f, 15f);
+                PointF[] points = new PointF[2];
+                points[0] = point1;
+                points[1] = point2;
+                //g.DrawPolygon(pen, points);
+                int cellSize = 10;
+                for (int y = 0; y < 500; ++y)
+                {
+                    g.DrawLine(pen, 0, y * cellSize, 500 * cellSize, y * cellSize);
+                }
+
+                for (int x = 0; x < 500; ++x)
+                {
+                    g.DrawLine(pen, x * cellSize, 0, x * cellSize, 500 * cellSize);
                 }
             }
         }
@@ -138,7 +152,7 @@ namespace HDC {
                 lbl_boatStatus.Text = "Status:" +
                     "\nConnected: " + connected +
                     "\nAnchor: " + sailUtils.getStatus(ref simAPI, "anchor") +
-                    "\nWind Heading && Strength: " + sailUtils.getStatus(ref simAPI, "windHeading") + "°  " + sailUtils.getStatus(ref simAPI, "windStrength") + " Newtons" +
+                    "\nWind Heading && Strength: " + sailUtils.getStatus(ref simAPI, "windHeading") + "°  " + sailUtils.getStatus(ref simAPI, "windStrength") + " N" +
                     "\nSpeed: " + sailUtils.getStatus(ref simAPI, "boatSpeed") +
                     "\nBoat Heading: " + sailUtils.getStatus(ref simAPI, "boatHeading") +
                     "\nBoat Pos: " + sailUtils.getStatus(ref simAPI, "boatPosition") +
@@ -147,7 +161,7 @@ namespace HDC {
                 lbl_boatStatus.Text = "Status:" +
                     "\nConnected: " + connected + 
                     "\nAnchor: N/A" +
-                    "\nWind Heading && Strength: N/A" + " Newtons" +
+                    "\nWind Heading && Strength: N/A" + " N" +
                     "\nSpeed: N/A " +
                     "\nBoat Heading: N/A" +
                     "\nBoat Pos: N/A" +

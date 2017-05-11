@@ -88,7 +88,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="ZeroMQ, Version=4.1.0.22, Culture=neutral, PublicKeyToken=4a9630883fd6c563, processorArchitecture=MSIL">
       <HintPath>..\packages\ZeroMQ.4.1.0.22\lib\net40\ZeroMQ.dll</HintPath>
-      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
