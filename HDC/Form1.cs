@@ -36,92 +36,6 @@ namespace HDC {
             seaFire.start();
             sampleThread.Start();
         }
-
-        private void btn_connect_Click (object sender, EventArgs e) {
-            serverHost = txtbx_Host.Text == "" ? "sim.sailsim.org" : txtbx_Host.Text;
-            serverPort = txtbx_port.Text == "" ? 20170 : int.Parse(txtbx_port.Text);
-            username = txtbx_uName.Text == "" ? "SeaFire" : txtbx_uName.Text;
-            password = txtbx_passwd.Text == "" ? "possum" : txtbx_passwd.Text;
-            if (!connected) {
-                connected = simAPI.connect(serverHost, serverPort, username, password);
-                drawGrid();
-                /** Check whether the connection was successful */
-                if (connected) {
-                    updateStatus();
-                    if (debug)
-                        Console.WriteLine("Connected to server");
-                    simAPI.Verbose = true;
-                } else {
-                    lbl_boatStatus.Text = lbl_boatStatus.Text + "\nConnected: False";
-                    if (debug)
-                        Console.WriteLine("Something went wrong");
-                }
-                sampleThread = new Thread(delegate ()
-
-               {
-                // Invoke your control like this
-                this.statusStrip1.Invoke(new MethodInvoker(delegate ()
-                   {
-                    //timer_UIUpdate.Start();
-                }));
-               });
-                sampleThread.Start();
-                
-            }
-        }
-        private void btn_discon_Click (object sender, EventArgs e) {
-            if (connected) {
-                simAPI.disconnect();
-                connected = false;
-                updateStatus();
-                if (sampleThread.IsAlive) {
-                    Console.WriteLine("killing...");
-                    sampleThread.Abort();
-                }
-            }
-        }
-
-        private void timer_UIUpdate_Tick (object sender, EventArgs e) { updateStatus(); }
-
-        private void timer_robotTick_Tick (object sender, EventArgs e) {
-            
-        }
-
-        private void drpdwn_Debug_Click (object sender, EventArgs e) { debug = debug == false ? true : false; }
-
-        private void btn_scan_Click (object sender, EventArgs e) {
-            simAPI.send ("obstacleScan");
-            simAPI.receive();
-        }
-
-        private void pictureBox1_Click (object sender, EventArgs e) {
-
-        }
-
-
-        private void btn_quit_Click (object sender, EventArgs e) {
-            if (connected) {
-                simAPI.disconnect();
-                Application.Exit();
-            } else {
-                Application.Exit();
-            }
-        }
-
-        private void dd_manualAnchor_Click(object sender, EventArgs e) {
-            anchorState = sailUtils.getStatus(ref simAPI, "anchor") == "down" ? true : false;
-            timer_UIUpdate.Stop();
-            if (anchorState) {
-                simAPI.send("anchor false");
-                simAPI.receive();
-            } else {
-                simAPI.send("anchor true");
-                simAPI.receive();
-            }
-            timer_UIUpdate.Start();
-            updateStatus();
-            
-        }
         public void drawGrid() {
             Bitmap bmp = new Bitmap(pbox_Grid.Width, pbox_Grid.Height);
             pbox_Grid.Image = bmp;
@@ -169,6 +83,86 @@ namespace HDC {
                     "\nBoat Pos: N/A" +
                     "\nGoal Pos: N/A";
             }
+        }
+
+        private void btn_connect_Click(object sender, EventArgs e) {
+            serverHost = txtbx_Host.Text == "" ? "sim.sailsim.org" : txtbx_Host.Text;
+            serverPort = txtbx_port.Text == "" ? 20170 : int.Parse(txtbx_port.Text);
+            username = txtbx_uName.Text == "" ? "SeaFire" : txtbx_uName.Text;
+            password = txtbx_passwd.Text == "" ? "possum" : txtbx_passwd.Text;
+            if (!connected) {
+                connected = simAPI.connect(serverHost, serverPort, username, password);
+                drawGrid();
+                /** Check whether the connection was successful */
+                if (connected) {
+                    updateStatus();
+                    if (debug)
+                        Console.WriteLine("Connected to server");
+                    simAPI.Verbose = true;
+                } else {
+                    lbl_boatStatus.Text = lbl_boatStatus.Text + "\nConnected: False";
+                    if (debug)
+                        Console.WriteLine("Something went wrong");
+                }
+                sampleThread = new Thread(delegate ()
+
+                {
+                    // Invoke your control like this
+                    this.statusStrip1.Invoke(new MethodInvoker(delegate ()
+                    {
+                        //timer_UIUpdate.Start();
+                    }));
+                });
+                sampleThread.Start();
+
+            }
+        }
+        private void btn_discon_Click(object sender, EventArgs e) {
+            if (connected) {
+                simAPI.disconnect();
+                connected = false;
+                updateStatus();
+                if (sampleThread.IsAlive) {
+                    Console.WriteLine("killing...");
+                    sampleThread.Abort();
+                }
+            }
+        }
+
+        private void timer_UIUpdate_Tick(object sender, EventArgs e) { updateStatus(); }
+
+        private void timer_robotTick_Tick(object sender, EventArgs e) {
+
+        }
+
+        private void drpdwn_Debug_Click(object sender, EventArgs e) { debug = debug == false ? true : false; }
+
+        private void btn_scan_Click(object sender, EventArgs e) {
+            simAPI.send("obstacleScan");
+            simAPI.receive();
+        }
+        private void btn_quit_Click(object sender, EventArgs e) {
+            if (connected) {
+                simAPI.disconnect();
+                Application.Exit();
+            } else {
+                Application.Exit();
+            }
+        }
+
+        private void dd_manualAnchor_Click(object sender, EventArgs e) {
+            anchorState = sailUtils.getStatus(ref simAPI, "anchor") == "down" ? true : false;
+            timer_UIUpdate.Stop();
+            if (anchorState) {
+                simAPI.send("anchor false");
+                simAPI.receive();
+            } else {
+                simAPI.send("anchor true");
+                simAPI.receive();
+            }
+            timer_UIUpdate.Start();
+            updateStatus();
+
         }
     }
 }

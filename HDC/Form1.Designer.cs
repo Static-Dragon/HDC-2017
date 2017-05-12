@@ -240,11 +240,9 @@ namespace HDC {
             this.pbox_Grid.TabIndex = 15;
             this.pbox_Grid.TabStop = false;
             this.pbox_Grid.WaitOnLoad = true;
-            this.pbox_Grid.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // txtbx_port
             // 
-            this.txtbx_port.AllowSpace = false;
             this.txtbx_port.Location = new System.Drawing.Point(13, 90);
             this.txtbx_port.Name = "txtbx_port";
             this.txtbx_port.Size = new System.Drawing.Size(100, 20);

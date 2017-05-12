@@ -13,8 +13,7 @@ namespace HDC {
                     double[] coords = new double[2];
                     String[] tmp = data.Split();
                     for (int i = 0; i < coords.Length; i++) {
-                        coords[i] = double.Parse(tmp[i]);
-                        coords[i] = Math.Truncate(coords[i] * 100) / 100;
+                        coords[i] = Math.Truncate(double.Parse (tmp[i]) * 100 / 100);
                         tmp[i] = coords[i].ToString();
                     }
                     return string.Join(" , ", tmp);
@@ -33,8 +32,7 @@ namespace HDC {
             return simAPI.receive ();
         }
         public static PointF getPoints(ref Client simAPI, String obj) {
-            String cString = getStatus(ref simAPI, obj);
-            String[] cArray = cString.Split(',');
+            String[] cArray = getStatus(ref simAPI, obj).Split(',');
             float[] cFloat = new float[2];
             for (int i = 0; i != cArray.Length; i++) {
                 cFloat[i] = float.Parse(cArray[i]);
