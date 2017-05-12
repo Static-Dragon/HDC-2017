@@ -1,5 +1,6 @@
 ﻿using NavInterfaceClient;
 using System;
+using System.Drawing;
 
 namespace HDC {
     public class sailUtils {
@@ -31,6 +32,15 @@ namespace HDC {
             simAPI.send (message);
             return simAPI.receive ();
         }
-
+        public static PointF getPoints(ref Client simAPI, String obj) {
+            String cString = getStatus(ref simAPI, obj);
+            String[] cArray = cString.Split(',');
+            float[] cFloat = new float[2];
+            for (int i = 0; i != cArray.Length; i++) {
+                cFloat[i] = float.Parse(cArray[i]);
+            }
+            return new PointF(cFloat[0], cFloat[1]);
+        }
     }
+
 }

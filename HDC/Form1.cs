@@ -13,22 +13,20 @@ using NavInterfaceClient;
 using System.Windows.Forms;
 using System.Threading;
 using System.Drawing;
-using System.Collections;
 
 namespace HDC {
     public partial class Form1 : Form {
+
         String serverHost, username, password;
-        static bool debug = false, anchorState;
-        bool connected = false;
+        static bool debug = false, connected = false, anchorState;
         int serverPort;
-        Pen pen = new Pen (Color.Black);
-        
         Thread sampleThread;
         static Client simAPI = new Client();
         SailAI seaFire = new SailAI(ref simAPI, debug);
 
         public Form1() { InitializeComponent(); }
-        private void Form1_Load(object sender, EventArgs e) {
+
+        private void Form1_Load(object sender, EventArgs e) {drawGrid();
             Thread sampleThread = new Thread(delegate () {
                 this.statusStrip1.Invoke (new MethodInvoker(delegate () {
                     timer_UIUpdate.Start();
@@ -38,62 +36,37 @@ namespace HDC {
             seaFire.start();
             sampleThread.Start();
         }
+
         private void btn_connect_Click (object sender, EventArgs e) {
             serverHost = txtbx_Host.Text == "" ? "sim.sailsim.org" : txtbx_Host.Text;
             serverPort = txtbx_port.Text == "" ? 20170 : int.Parse(txtbx_port.Text);
             username = txtbx_uName.Text == "" ? "SeaFire" : txtbx_uName.Text;
             password = txtbx_passwd.Text == "" ? "possum" : txtbx_passwd.Text;
-            connected = simAPI.connect(serverHost, serverPort, username, password);
-
-            /** Check whether the connection was successful */
-            if (connected) {
-                updateStatus();
-                if (debug)
-                    Console.WriteLine("Connected to server");
+            if (!connected) {
+                connected = simAPI.connect(serverHost, serverPort, username, password);
+                drawGrid();
+                /** Check whether the connection was successful */
+                if (connected) {
+                    updateStatus();
+                    if (debug)
+                        Console.WriteLine("Connected to server");
                     simAPI.Verbose = true;
-            } else {
-                lbl_boatStatus.Text = lbl_boatStatus.Text + "\nConnected: False";
-                if (debug)
-                    Console.WriteLine("Something went wrong");
-            }
-            sampleThread = new Thread (delegate ()
-            
-            {
+                } else {
+                    lbl_boatStatus.Text = lbl_boatStatus.Text + "\nConnected: False";
+                    if (debug)
+                        Console.WriteLine("Something went wrong");
+                }
+                sampleThread = new Thread(delegate ()
+
+               {
                 // Invoke your control like this
                 this.statusStrip1.Invoke(new MethodInvoker(delegate ()
-                {
+                   {
                     //timer_UIUpdate.Start();
                 }));
-            });
-            sampleThread.Start();
-            pbox_Grid.Show ();
-            Bitmap bmp = new Bitmap (pbox_Grid.Width, pbox_Grid.Height);
-            using (Graphics g = Graphics.FromImage (bmp)) {
-                g.Clear (Color.White);
-            }
-            pbox_Grid.Image = bmp;
-            /*
-            PointF points = new PointF (20.0f, 20.0f);
-            PointF points2 = new PointF (40.0f, 40.0f);
-            PointF[] point = new PointF [2] {points, points2 };*/
-            Console.WriteLine (pbox_Grid.Size);
-            using (Graphics g = Graphics.FromImage (bmp)) {
-                PointF point1 = new PointF(10f, 10f);
-                PointF point2 = new PointF(20f, 15f);
-                PointF[] points = new PointF[2];
-                points[0] = point1;
-                points[1] = point2;
-                //g.DrawPolygon(pen, points);
-                int cellSize = 10;
-                for (int y = 0; y < 500; ++y)
-                {
-                    g.DrawLine(pen, 0, y * cellSize, 500 * cellSize, y * cellSize);
-                }
-
-                for (int x = 0; x < 500; ++x)
-                {
-                    g.DrawLine(pen, x * cellSize, 0, x * cellSize, 500 * cellSize);
-                }
+               });
+                sampleThread.Start();
+                
             }
         }
         private void btn_discon_Click (object sender, EventArgs e) {
@@ -109,9 +82,11 @@ namespace HDC {
         }
 
         private void timer_UIUpdate_Tick (object sender, EventArgs e) { updateStatus(); }
+
         private void timer_robotTick_Tick (object sender, EventArgs e) {
             
         }
+
         private void drpdwn_Debug_Click (object sender, EventArgs e) { debug = debug == false ? true : false; }
 
         private void btn_scan_Click (object sender, EventArgs e) {
@@ -122,6 +97,7 @@ namespace HDC {
         private void pictureBox1_Click (object sender, EventArgs e) {
 
         }
+
 
         private void btn_quit_Click (object sender, EventArgs e) {
             if (connected) {
@@ -146,7 +122,33 @@ namespace HDC {
             updateStatus();
             
         }
+        public void drawGrid() {
+            Bitmap bmp = new Bitmap(pbox_Grid.Width, pbox_Grid.Height);
+            pbox_Grid.Image = bmp;
+            Console.WriteLine(pbox_Grid.Size);
+            using (Graphics g = Graphics.FromImage(bmp)) {
+                Size size = new Size(10, 10);
+                String[] asdf = sailUtils.getStatus(ref simAPI, "boatPosition").Split(',');
+                int[] coords = { int.Parse(asdf[0]), int.Parse(asdf[1])};
+                Point location = new Point(coords[0],coords[1]);
+                Rectangle rectangle = new Rectangle(location, size);
+                g.Clear(Color.White);
+                
+                float cellSize = 80.5f;
+                using (Pen pen = new Pen(Color.Black)) {
+                    for (int y = 0; y < 5; ++y) {
+                        g.DrawLine(pen, 0, y * cellSize, 10 * cellSize, y * cellSize);
+                    }
 
+                    for (int x = 0; x < 5; ++x) {
+                        g.DrawLine(pen, x * cellSize, 0, x * cellSize, 10 * cellSize);
+                    }
+                    g.DrawEllipse(pen, rectangle);
+                }
+                PointF shipCoords = sailUtils.getPoints(ref simAPI, "boatPosition");
+
+            }
+        }
         public void updateStatus() {
             if (connected) {
                 lbl_boatStatus.Text = "Status:" +
