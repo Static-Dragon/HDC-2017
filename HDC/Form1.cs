@@ -27,17 +27,18 @@ namespace HDC {
 
         public Form1() { InitializeComponent(); }
 
-        private void Form1_Load(object sender, EventArgs e) {drawGrid();
+        private void Form1_Load(object sender, EventArgs e) {
             Thread sampleThread = new Thread(delegate () {
                 this.statusStrip1.Invoke (new MethodInvoker(delegate () {
                     timer_UIUpdate.Start();
                     timer_roboTick.Start();
                 }));
             });
-            seaFire.start();
+
             sampleThread.Start();
+            
         }
-        public void drawGrid() {
+ /*       public void drawGrid() {
             Bitmap bmp = new Bitmap(pbox_Grid.Width, pbox_Grid.Height);
             pbox_Grid.Image = bmp;
             Console.WriteLine(pbox_Grid.Size);
@@ -63,7 +64,7 @@ namespace HDC {
                 PointF shipCoords = sailUtils.getPoints(ref simAPI, "boatPosition");
 
             }
-        }
+        }*/
         public void updateStatus() {
             if (connected) {
                 lbl_boatStatus.Text = "Status:" +
@@ -93,13 +94,15 @@ namespace HDC {
             password = txtbx_passwd.Text == "" ? "possum" : txtbx_passwd.Text;
             if (!connected) {
                 connected = simAPI.connect(serverHost, serverPort, username, password);
-                drawGrid();
+                //drawGrid();
                 /** Check whether the connection was successful */
                 if (connected) {
                     updateStatus();
                     if (debug)
                         Console.WriteLine("Connected to server");
-                    simAPI.Verbose = true;
+                    //simAPI.Verbose = true;
+                    //Console.WriteLine(sailUtils.send(ref simAPI, "obstacle", "1")[1]);
+                    seaFire.start();
                 } else {
                     lbl_boatStatus.Text = lbl_boatStatus.Text + "\nConnected: False";
                     if (debug)

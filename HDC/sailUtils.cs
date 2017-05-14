@@ -27,9 +27,13 @@ namespace HDC {
                     }
             };
         }
-        public static string[] send (ref Client simAPI, String message) {
-            simAPI.send (message);
+        public static string[] send (ref Client simAPI, String subject, String message) {
+            simAPI.send (subject, message);
             return simAPI.receive ();
+        }
+        public static string[] send(ref Client simAPI, String subject) {
+            simAPI.send(subject);
+            return simAPI.receive();
         }
         public static PointF getPoints(ref Client simAPI, String obj) {
             String[] cArray = getStatus(ref simAPI, obj).Split(',');
@@ -38,6 +42,14 @@ namespace HDC {
                 cFloat[i] = float.Parse(cArray[i]);
             }
             return new PointF(cFloat[0], cFloat[1]);
+        }
+        public static void anchorToggle(ref Client simAPI,bool state) {
+            if (state == false && getStatus(ref simAPI, "anchor") == "true") {
+                send(ref simAPI, "anchor", "false");
+            }
+            if (state == true && getStatus(ref simAPI, "anchor") == "false") {
+                send(ref simAPI, "anchor", "true");
+            }
         }
     }
 
