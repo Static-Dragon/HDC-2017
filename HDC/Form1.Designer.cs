@@ -148,9 +148,10 @@ namespace HDC {
             this.lbl_boatStatus.AutoSize = true;
             this.lbl_boatStatus.Location = new System.Drawing.Point(10, 221);
             this.lbl_boatStatus.Name = "lbl_boatStatus";
-            this.lbl_boatStatus.Size = new System.Drawing.Size(31, 13);
+            this.lbl_boatStatus.Size = new System.Drawing.Size(144, 104);
             this.lbl_boatStatus.TabIndex = 11;
-            this.lbl_boatStatus.Text = "Blah:";
+            this.lbl_boatStatus.Text = "Status:\r\nConnected:\r\nAnchor: \r\nWind Heading && Strength:  N\r\nSpeed:  \r\nBoat Headi" +
+    "ng: \r\nBoat Pos: \r\nGoal Pos: ";
             // 
             // menuStrip1
             // 

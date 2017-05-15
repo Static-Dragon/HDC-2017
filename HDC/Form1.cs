@@ -19,7 +19,7 @@ namespace HDC {
     public partial class Form1 : Form {
 
         String serverHost, username, password;
-        static bool debug = false, connected = false, anchorState;
+        static bool debug = true, connected = false, anchorState;
         int serverPort;
         Thread sampleThread;
         static Client simAPI = new Client();
@@ -28,10 +28,17 @@ namespace HDC {
         public Form1() { InitializeComponent(); }
 
         private void Form1_Load(object sender, EventArgs e) {
+            lbl_boatStatus.Text = "\nConnected: " +
+                    "\nAnchor: " +
+                    "\nWind Heading && Strength: " + " N" +
+                    "\nSpeed:  " +
+                    "\nBoat Heading: " +
+                    "\nBoat Pos: " +
+                    "\nGoal Pos: ";
             Thread sampleThread = new Thread(delegate () {
                 this.statusStrip1.Invoke (new MethodInvoker(delegate () {
                     timer_UIUpdate.Start();
-                    timer_roboTick.Start();
+                    //timer_roboTick.Start();
                 }));
             });
 
@@ -98,15 +105,17 @@ namespace HDC {
                 /** Check whether the connection was successful */
                 if (connected) {
                     updateStatus();
-                    if (debug)
+                    if (debug) {
                         Console.WriteLine("Connected to server");
-                    //simAPI.Verbose = true;
+                        simAPI.Verbose = true;
+                    }
                     //Console.WriteLine(sailUtils.send(ref simAPI, "obstacle", "1")[1]);
                     seaFire.start();
                 } else {
-                    lbl_boatStatus.Text = lbl_boatStatus.Text + "\nConnected: False";
+                    updateStatus();
                     if (debug)
                         Console.WriteLine("Something went wrong");
+
                 }
                 sampleThread = new Thread(delegate ()
 
@@ -118,7 +127,6 @@ namespace HDC {
                     }));
                 });
                 sampleThread.Start();
-
             }
         }
         private void btn_discon_Click(object sender, EventArgs e) {
@@ -136,7 +144,7 @@ namespace HDC {
         private void timer_UIUpdate_Tick(object sender, EventArgs e) { updateStatus(); }
 
         private void timer_robotTick_Tick(object sender, EventArgs e) {
-
+            seaFire.tick();
         }
 
         private void drpdwn_Debug_Click(object sender, EventArgs e) { debug = debug == false ? true : false; }
@@ -157,13 +165,7 @@ namespace HDC {
         private void dd_manualAnchor_Click(object sender, EventArgs e) {
             anchorState = sailUtils.getStatus(ref simAPI, "anchor") == "down" ? true : false;
             timer_UIUpdate.Stop();
-            if (anchorState) {
-                simAPI.send("anchor false");
-                simAPI.receive();
-            } else {
-                simAPI.send("anchor true");
-                simAPI.receive();
-            }
+            sailUtils.anchorToggle(ref simAPI, anchorState);
             timer_UIUpdate.Start();
             updateStatus();
 
