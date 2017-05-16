@@ -30,7 +30,7 @@ namespace HDC {
             };
         }
         public static string[] send(ref Client simAPI, String subject, String message) {
-            simAPI.send(subject, message);
+            simAPI.send(subject + message);
             return simAPI.receive();
         }
         public static string[] send(ref Client simAPI, String subject) {

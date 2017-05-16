@@ -47,6 +47,7 @@ namespace NavInterfaceClient {
         /// <returns>True if the connection was successful</returns>
         public bool connect(string host = SERVER_HOST, int port = SERVER_PORT, string username = DEFAULT_USER, string password = DEFAULT_PASS) {
             string connect = string.Format("tcp://{0}:{1}", host, port);
+            
             socket = new ZSocket(context, ZSocketType.REQ);
 
             if (Verbose)
@@ -84,7 +85,7 @@ namespace NavInterfaceClient {
             if (Verbose)
                 Console.WriteLine(string.Format("nav -->     {0}", message + " " + value));
             try {
-                socket.Send(new ZFrame(message + " " + value));
+                 socket.Send(new ZFrame(message + " " + value));
             }
             catch (ZException e) {
                 Console.WriteLine(e.Message);

@@ -29,6 +29,7 @@ namespace HDC {
         public Form1() { InitializeComponent(); }
 
         private void Form1_Load(object sender, EventArgs e) {
+
             lbl_boatStatus.Text = "\nConnected: " +
                     "\nAnchor: " +
                     "\nWind Heading && Strength: " + " N" +
@@ -111,6 +112,7 @@ namespace HDC {
                 /** Check whether the connection was successful */
                 if (connected) {
                     updateStatus();
+  
                     if (debug) {
                         Console.WriteLine("Connected to server");
                         simAPI.Verbose = true;
@@ -180,6 +182,26 @@ namespace HDC {
             }
         }
 
+        private void anchorToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void radBut_anchDown_CheckedChanged(object sender, EventArgs e) {
+            if (radBut_anchDown.Checked) {
+                simAPI.send("anchor", "false");
+                simAPI.receive();
+                radBut_anchUp.Checked = false;
+            }
+        }
+
+        private void radBut_anchUp_CheckedChanged(object sender, EventArgs e) {
+            if (radBut_anchDown.Enabled) {
+                simAPI.send("anchor", "true");
+                simAPI.receive();
+                radBut_anchDown.Checked = false;
+            }
+        }
+
         private void drpdwn_Debug_Click(object sender, EventArgs e) { debug = debug == false ? true : false; }
 
         private void btn_scan_Click(object sender, EventArgs e) {
@@ -198,7 +220,11 @@ namespace HDC {
         private void dd_manualAnchor_Click(object sender, EventArgs e) {
             anchorState = sailUtils.getStatus(ref simAPI, "anchor") == "down" ? true : false;
             timer_UIUpdate.Stop();
-            sailUtils.anchorToggle(ref simAPI, anchorState);
+            if (anchorState) {
+                sailUtils.send(ref simAPI, "anchor", "false");
+            } else {
+                sailUtils.send(ref simAPI, "anchor", "true");
+            }
             timer_UIUpdate.Start();
             updateStatus();
 

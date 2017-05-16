@@ -49,6 +49,8 @@ namespace HDC {
             this.timer_roboTick = new System.Windows.Forms.Timer(this.components);
             this.btn_scan = new System.Windows.Forms.Button();
             this.txtbx_port = new HDC.NumericTextBox();
+            this.radBut_anchUp = new System.Windows.Forms.RadioButton();
+            this.radBut_anchDown = new System.Windows.Forms.RadioButton();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -173,8 +175,9 @@ namespace HDC {
             // anchorToolStripMenuItem
             // 
             this.anchorToolStripMenuItem.Name = "anchorToolStripMenuItem";
-            this.anchorToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.anchorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.anchorToolStripMenuItem.Text = "Anchor";
+            this.anchorToolStripMenuItem.Click += new System.EventHandler(this.anchorToolStripMenuItem_Click);
             // 
             // manualToolStripMenuItem
             // 
@@ -187,7 +190,7 @@ namespace HDC {
             // dd_manualAnchor
             // 
             this.dd_manualAnchor.Name = "dd_manualAnchor";
-            this.dd_manualAnchor.Size = new System.Drawing.Size(113, 22);
+            this.dd_manualAnchor.Size = new System.Drawing.Size(152, 22);
             this.dd_manualAnchor.Text = "Anchor";
             this.dd_manualAnchor.Click += new System.EventHandler(this.dd_manualAnchor_Click);
             // 
@@ -240,11 +243,38 @@ namespace HDC {
             this.txtbx_port.Size = new System.Drawing.Size(100, 20);
             this.txtbx_port.TabIndex = 4;
             // 
+            // radBut_anchUp
+            // 
+            this.radBut_anchUp.AutoSize = true;
+            this.radBut_anchUp.Location = new System.Drawing.Point(606, 12);
+            this.radBut_anchUp.Name = "radBut_anchUp";
+            this.radBut_anchUp.Size = new System.Drawing.Size(76, 17);
+            this.radBut_anchUp.TabIndex = 15;
+            this.radBut_anchUp.TabStop = true;
+            this.radBut_anchUp.Text = "Anchor Up";
+            this.radBut_anchUp.UseVisualStyleBackColor = true;
+            this.radBut_anchUp.CheckedChanged += new System.EventHandler(this.radBut_anchUp_CheckedChanged);
+            // 
+            // radBut_anchDown
+            // 
+            this.radBut_anchDown.AutoSize = true;
+            this.radBut_anchDown.Checked = true;
+            this.radBut_anchDown.Location = new System.Drawing.Point(605, 35);
+            this.radBut_anchDown.Name = "radBut_anchDown";
+            this.radBut_anchDown.Size = new System.Drawing.Size(90, 17);
+            this.radBut_anchDown.TabIndex = 16;
+            this.radBut_anchDown.TabStop = true;
+            this.radBut_anchDown.Text = "Anchor Down";
+            this.radBut_anchDown.UseVisualStyleBackColor = true;
+            this.radBut_anchDown.CheckedChanged += new System.EventHandler(this.radBut_anchDown_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(703, 457);
+            this.Controls.Add(this.radBut_anchDown);
+            this.Controls.Add(this.radBut_anchUp);
             this.Controls.Add(this.btn_scan);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.lbl_boatStatus);
@@ -298,6 +328,8 @@ namespace HDC {
         private System.Windows.Forms.ToolStripMenuItem drpdwn_Debug;
         private System.Windows.Forms.Timer timer_roboTick;
         private System.Windows.Forms.Button btn_scan;
+        private System.Windows.Forms.RadioButton radBut_anchUp;
+        private System.Windows.Forms.RadioButton radBut_anchDown;
     }
 }
 
