@@ -38,7 +38,6 @@ namespace HDC {
             Thread sampleThread = new Thread(delegate () {
                 this.statusStrip1.Invoke (new MethodInvoker(delegate () {
                     timer_UIUpdate.Start();
-                    //timer_roboTick.Start();
                 }));
             });
 
@@ -82,6 +81,7 @@ namespace HDC {
                     "\nBoat Heading: " + sailUtils.getStatus(ref simAPI, "boatHeading") +
                     "\nBoat Pos: " + sailUtils.getStatus(ref simAPI, "boatPosition") +
                     "\nGoal Pos: " + sailUtils.getStatus(ref simAPI, "goalPosition");
+
             } else {
                 lbl_boatStatus.Text = "Status:" +
                     "\nConnected: " + connected + 
@@ -110,7 +110,7 @@ namespace HDC {
                         simAPI.Verbose = true;
                     }
                     //Console.WriteLine(sailUtils.send(ref simAPI, "obstacle", "1")[1]);
-                    seaFire.start();
+                    //seaFire.start();
                 } else {
                     updateStatus();
                     if (debug)
@@ -141,10 +141,26 @@ namespace HDC {
             }
         }
 
-        private void timer_UIUpdate_Tick(object sender, EventArgs e) { updateStatus(); }
+        private void timer_UIUpdate_Tick(object sender, EventArgs e) {
+            updateStatus();
+            if (debug) {
+                Console.WriteLine("tick");
+            }
+        }
 
         private void timer_robotTick_Tick(object sender, EventArgs e) {
             seaFire.tick();
+            if (debug) {
+                Console.WriteLine("tick");
+            }
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e) {
+            if (e.KeyData == Keys.A){
+                sailUtils.turnBoatLeft(ref simAPI);
+            } else if (e.KeyData == Keys.D) {
+                sailUtils.turnBoatRight(ref simAPI);
+            }
         }
 
         private void drpdwn_Debug_Click(object sender, EventArgs e) { debug = debug == false ? true : false; }

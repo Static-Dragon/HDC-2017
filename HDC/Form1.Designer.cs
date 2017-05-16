@@ -25,7 +25,6 @@ namespace HDC {
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btn_conn = new System.Windows.Forms.Button();
             this.txtbx_Host = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -49,15 +48,13 @@ namespace HDC {
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.timer_roboTick = new System.Windows.Forms.Timer(this.components);
             this.btn_scan = new System.Windows.Forms.Button();
-            this.pbox_Grid = new System.Windows.Forms.PictureBox();
             this.txtbx_port = new HDC.NumericTextBox();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbox_Grid)).BeginInit();
             this.SuspendLayout();
             // 
             // btn_conn
             // 
-            this.btn_conn.Location = new System.Drawing.Point(362, 405);
+            this.btn_conn.Location = new System.Drawing.Point(615, 376);
             this.btn_conn.Name = "btn_conn";
             this.btn_conn.Size = new System.Drawing.Size(75, 23);
             this.btn_conn.TabIndex = 0;
@@ -222,25 +219,19 @@ namespace HDC {
             this.statusStrip1.TabIndex = 13;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // timer_roboTick
+            // 
+            this.timer_roboTick.Interval = 1000;
+            // 
             // btn_scan
             // 
-            this.btn_scan.Location = new System.Drawing.Point(443, 405);
+            this.btn_scan.Location = new System.Drawing.Point(534, 376);
             this.btn_scan.Name = "btn_scan";
             this.btn_scan.Size = new System.Drawing.Size(75, 23);
             this.btn_scan.TabIndex = 14;
             this.btn_scan.Text = "Scan";
             this.btn_scan.UseVisualStyleBackColor = true;
             this.btn_scan.Click += new System.EventHandler(this.btn_scan_Click);
-            // 
-            // pbox_Grid
-            // 
-            this.pbox_Grid.InitialImage = ((System.Drawing.Image)(resources.GetObject("pbox_Grid.InitialImage")));
-            this.pbox_Grid.Location = new System.Drawing.Point(191, 24);
-            this.pbox_Grid.Name = "pbox_Grid";
-            this.pbox_Grid.Size = new System.Drawing.Size(500, 375);
-            this.pbox_Grid.TabIndex = 15;
-            this.pbox_Grid.TabStop = false;
-            this.pbox_Grid.WaitOnLoad = true;
             // 
             // txtbx_port
             // 
@@ -254,7 +245,6 @@ namespace HDC {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(703, 457);
-            this.Controls.Add(this.pbox_Grid);
             this.Controls.Add(this.btn_scan);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.lbl_boatStatus);
@@ -270,12 +260,13 @@ namespace HDC {
             this.Controls.Add(this.txtbx_Host);
             this.Controls.Add(this.btn_conn);
             this.Controls.Add(this.menuStrip1);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbox_Grid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -307,7 +298,6 @@ namespace HDC {
         private System.Windows.Forms.ToolStripMenuItem drpdwn_Debug;
         private System.Windows.Forms.Timer timer_roboTick;
         private System.Windows.Forms.Button btn_scan;
-        private System.Windows.Forms.PictureBox pbox_Grid;
     }
 }
 
