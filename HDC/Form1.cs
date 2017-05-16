@@ -21,7 +21,8 @@ namespace HDC {
         String serverHost, username, password;
         static bool debug = true, connected = false, anchorState;
         int serverPort;
-        Thread sampleThread;
+        Thread uiThread;
+        //Thread roboThread;
         static Client simAPI = new Client();
         SailAI seaFire = new SailAI(ref simAPI, debug);
 
@@ -35,14 +36,19 @@ namespace HDC {
                     "\nBoat Heading: " +
                     "\nBoat Pos: " +
                     "\nGoal Pos: ";
-            Thread sampleThread = new Thread(delegate () {
+            Thread uiThread = new Thread(delegate () {
                 this.statusStrip1.Invoke (new MethodInvoker(delegate () {
                     timer_UIUpdate.Start();
                 }));
             });
-
-            sampleThread.Start();
-            
+            /*
+            Thread roboThread = new Thread(delegate () {
+                this.statusStrip2.Invoke(new MethodInvoker(delegate () {
+                    timer_roboTick.Start();
+                }));
+            });*/
+            uiThread.Start();
+            //roboThread.Start();
         }
  /*       public void drawGrid() {
             Bitmap bmp = new Bitmap(pbox_Grid.Width, pbox_Grid.Height);
@@ -117,16 +123,26 @@ namespace HDC {
                         Console.WriteLine("Something went wrong");
 
                 }
-                sampleThread = new Thread(delegate ()
+
+                uiThread = new Thread(delegate ()
 
                 {
                     // Invoke your control like this
                     this.statusStrip1.Invoke(new MethodInvoker(delegate ()
                     {
-                        //timer_UIUpdate.Start();
+                        timer_UIUpdate.Start();
                     }));
                 });
-                sampleThread.Start();
+               /* roboThread = new Thread(delegate ()
+                {
+                    // Invoke your control like this
+                    this.statusStrip2.Invoke(new MethodInvoker(delegate ()
+                    {
+                        timer_roboTick.Start();
+                    }));
+                });
+                roboThread.Start();*/
+                uiThread.Start();
             }
         }
         private void btn_discon_Click(object sender, EventArgs e) {
@@ -134,9 +150,9 @@ namespace HDC {
                 simAPI.disconnect();
                 connected = false;
                 updateStatus();
-                if (sampleThread.IsAlive) {
+                if (uiThread.IsAlive) {
                     Console.WriteLine("killing...");
-                    sampleThread.Abort();
+                    uiThread.Abort();
                 }
             }
         }
@@ -150,16 +166,17 @@ namespace HDC {
 
         private void timer_robotTick_Tick(object sender, EventArgs e) {
             seaFire.tick();
-            if (debug) {
-                Console.WriteLine("tick");
-            }
+                MessageBox.Show("yolo");
+            
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyData == Keys.A){
                 sailUtils.turnBoatLeft(ref simAPI);
+                seaFire.tick();
             } else if (e.KeyData == Keys.D) {
                 sailUtils.turnBoatRight(ref simAPI);
+                seaFire.tick();
             }
         }
 
