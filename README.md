@@ -1,3 +1,5 @@
+# NOTE: The Harris sail sim servers are now down, you may be able to use it again if user Jerbear64's Rust port of sailsim is complete
+
 # HDC-2017
 SeaFire's project for Harris Design Challenge 2017
 
